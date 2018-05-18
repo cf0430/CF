@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="js/jquery.min.js"></script>
+    <title>*A*B猜数字</title>
+</head>
+<style>
+    *{margin: 0;padding: 0;}
+    html body{
+        width: 100%;
+        height: 100%;
+        background-color:rgb(228, 228, 228);
+    }
+    .container{
+        width: 80%;
+        height: 100vh;
+        margin: 0 auto;
+        color: rgb(83, 84, 85);
+    }
+    h3{
+        padding: 10px 0;
+    }
+    hr{margin:10px 0;}
+    input{
+        width: 200px;
+        height: 30px;
+        outline: none;
+    }
+    button{
+        width: 100px;
+        height: 30px;
+    }
+    .matchValue{
+        color:#f2f2f2;  
+        background: cornflowerblue;
+        border-radius:10px;
+    }
+    .again,.answer{
+        color:#f2f2f2; 
+        background:orangered;
+        border-radius:10px;  
+    }
+    #result{
+        display: block;
+        border: 1px solid rgb(121, 119, 119);
+        height: 30px;
+        width: 100%;
+        margin-top: 10px;
+        box-sizing: border-box;
+    }
+    table{
+        border-collapse:collapse;
+        box-sizing: border-box;
+        width: 100%;
+        text-align: center;
+    }
+    table,th,td{
+        border: 1px solid rgb(121, 119, 119);
+    }
+</style>
+<body>
+    <div class="container">
+        <h3>*A*B猜数字小游戏</h3>
+        <p>游戏规则：猜一个4個不重复的数字，若数字和位置都相同则为A，若数字相同但位置不同则为B，10次机会</p>
+        <hr>
+        <form action="">
+            <input type="text" placeholder="请输入4位不重复的数字">
+            <button class="matchValue">猜一次</button>
+            <button class="again">重来</button>
+            <button class="answer">看答案</button>
+        </form>
+        <div id="result"></div>
+        <table>
+            <thead>
+                <tr>
+                    <th>次数</th>
+                    <th>猜数字</th>
+                    <th>结果</th>
+                </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+        </table>
+
+    </div>
+</body>
+<script>
+    var array=[];
+    var time=0;     //猜测的次数
+    while(array.length<4){
+         var num=parseInt(Math.random()*10); 
+         if(array.indexOf(num)<0){   //判断重复
+             array.push(num);
+         }
+    }
+
+
+    $(".matchValue").click(function(e){
+        e.preventDefault();
+        var a=$("input").val();
+
+        var ok=0; //A的数量
+        var maybe=0; //B的数量
+
+        if(a.length==4){
+            time++;
+            // if(ok>=4){
+            //     $("#result").html("<span style='color:green;font-weight:bold'>恭喜你猜对了</span>");
+            // }else{
+                if(time<11){
+                        for(var i=0;i<array.length;i++){
+                            // if(ok==4){
+                            //         $("#result").html("<span style='color:green;font-weight:bold'>恭喜你猜对了</span>");
+                            // }else{
+                                if(array[i]==a[i]){
+                                    ok++;
+                                    if(ok==4){
+                                        $("#result").html("<span style='color:green;font-weight:bold'>恭喜你猜对了</span>");
+                                        break;
+                                    }
+                                }else{
+                                        // for(var j=0;j<array.length;j++){
+                                        //     if(array[i]==a[j]){
+                                        //         maybe++;
+                                        //     }
+                                        // }
+                                }  //if end
+                            //}   
+                        }//for end
+                        var result=ok+"A"+maybe+"B";
+                        var html=`<tr>
+                                    <td>`+time+`</td>
+                                    <td>`+a+`</td>
+                                    <td>`+result+`</td>
+                                </tr>`
+                        $("tbody").append(html);
+                }else{
+                    $("#result").html("<span style='color:red;font-weight:bold'>大哥，10次了</span>");
+                }
+
+            //}
+        }else{
+            $("#result").html("<span style='color:red;font-weight:bold'>输入有误</span>");
+        }
+    })
+
+    $(".answer").click(function(e){
+        e.preventDefault();
+        $("#result").html("<span>答案是："+array.join("")+"</span>");
+    })
+    
+    $(".again").click(function(e){
+        e.preventDefault();
+        location.reload();
+        // time=0;
+        // $("input").val("");
+        // $("tbody").html("");
+        // $("#result").html("");
+    })
+
+
+    
+</script>
+</html>
