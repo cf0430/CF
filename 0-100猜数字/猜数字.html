@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <h1>猜一个0-100的数字</h1>
+    <label></label><input type="text">
+</body>
+<script src="jquery.min.js"></script>
+<script>
+    var state = {
+          n: Math.floor(99 * Math.random())+1, //整数： 0 < n <100
+          low: 0, //可猜数字范围下限
+          high: 100, //可猜数字范围上限
+          guessnum: 0, //猜测的次数
+          guess: undefined //最后一次猜测
+        };
+    console.log(state);
+
+    display(state);
+
+    $("input").change(function(){
+        var g=this.value;
+        // console.log(g);
+
+        if ((g > state.low) && (g < state.high)) {
+          //对应的更新状态
+          if (g < state.n){
+            state.low = g;
+          } else if (g > state.n){
+            state.high = g;
+          }
+          
+          state.guess = g;
+          state.guessnum++;
+          //根据用户猜测情况来修改文档
+          display(state);
+          console.log(state);
+        } else {
+          //无效的猜测：不保存状态
+          alert("请输入大于" + state.low + "和小于" + state.high);
+        }
+    })
+
+        //修改文档来显示游戏当前状态
+        function display(state) {
+        //显示文档的导航和标题
+        $("h1").html("猜一个" + state.low + "到" + state.high + "之间的数字！") ;
+            
+ 
+        //确保input字段是可见的、空的并且是聚焦的
+        $("input").val('');
+        $("input").focus();
+ 
+        //根据用户最近猜测，设置提示
+        if (state.guess === undefined){
+            $("label").html("输入你的猜测：");
+        } else if (state.guess < state.n)
+            $("label").html(state.guess + "低了，再猜一次：");
+        else if (state.guess > state.n)
+            $("label").html(state.guess + "高了，再猜一次：");
+        else {
+            $("label").html(state.guess +  "正确！");
+            
+        }
+      }
+</script>
+</html>
